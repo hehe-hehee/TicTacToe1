@@ -1,0 +1,4 @@
+1. Game Board
+2. Condition of winning
+3. Players Moves
+4. CSV file with header: Player1 name, Player2 name, Winner with sign, Date Played
