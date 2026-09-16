@@ -2,3 +2,9 @@
 2. Condition of winning
 3. Players Moves
 4. CSV file with header: Player1 name, Player2 name, Winner with sign, Date Played
+
+
+
+1. self.size used for overall size, later reshaping it in row, col matrix.
+2. Using np.array to initialize the board shape by "_". 
+3. .astype(object) makes array into (dtype = 'o). Either way it's making sure it has homogeneous number at beginning, which will be later replaced by the player sign ('X'/ 'O') during game play.
