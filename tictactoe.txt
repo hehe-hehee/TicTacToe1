@@ -2,7 +2,9 @@
 2. Condition of winning
 3. Players Moves
 4. CSV file with header: SN, Player1 name, Player2 name, Winner with sign, Date Played
-5. Validation.py for validating the csv file
+5. CSV file with header: SN, Player1 name, Player2 Name, P-1 win times, P-2 win times, Final winner
+6. Rounds, number of times played to win
+7. Validation.py for validating the csv file
 
 1. self.size used for overall size, later reshaping it in row, col matrix.
 2. Using np.array to initialize the board shape by "_". 
