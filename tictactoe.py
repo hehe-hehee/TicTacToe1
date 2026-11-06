@@ -1,23 +1,23 @@
 import numpy as np
-import csv, pandas as pd
 
-#Board
 class Board:
     def __init__(self, rows, cols):
         self.rows = rows
         self.cols = cols
         self.size = self.rows * self.cols
-        #self.board = np.arange(0, self.size).reshape(rows,cols).astype(object) or
-        self.board = np.full((self.rows, self.cols), " _ ")
+        self.board = np.full((self.rows, self.cols), "_")
 
-    def game_board(self):
+    def board_display(self):
+        print("-" *(self.rows*7+ (self.rows-1)))
         for i in range (self.rows):
-            print(" -" * (self.cols*3 + 1))
-            for j in range (self.cols):
-                print(" | "+ self.board[i][j], end="")
-            print(" | ")
-        print(" -" * (self.cols*3 + 1))
+            
+            for j in range(self.cols):
+                print(f" [ {self.board[i][j]} ] ", end=" ")
+            
+            print()
+        print("-" *(self.cols*7+ (self.rows-1)))
 
 
-b = Board(3,3)
-(b.game_board())
+b = Board(rows=3, cols=3)
+b.board[2][1] = "X"
+b.board_display()
