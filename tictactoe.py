@@ -21,8 +21,41 @@ class Board:
 class Condition(Board):
     def __init__(self, rows, cols):
         super().__init__(rows, cols)
+        self.winner = None
+        self.win = False
 
-class Play(Board):
+
+    def vertical_win(self):
+        for i in range (0, self.rows):
+            if self.board[i][0] == " _ ":
+                continue
+            self.win = True
+
+            for j in range (1, self.cols):
+                if self.board[i][0] != self.board[i][j]:
+                    self.win  = False
+
+            if self.win == True:
+                self.winner = self.board[i][0]
+                return self.winner
+
+    def horizontal_win(self):
+        for i in range(0, self.cols):
+            if self.board[0][i] == " _ ":
+                continue
+
+            self.win = True
+            for j in range (1,self.rows):
+                if self.board[0][j]!= self.board[i][j]:
+                    self.win = False
+            if self.win:
+                self.winner = self.board[0][i]
+                return self.winner
+
+
+
+
+class Play(Condition):
     def __init__(self, rows, cols):
         super().__init__(rows, cols)
         self.player = random.choice([" X ", " O "])
@@ -35,7 +68,7 @@ class Play(Board):
         else:
             pos_row = position//self.rows
             pos_col = position%self.cols
-            if self.board[pos_row][pos_col] == "  ":
+            if self.board[pos_row][pos_col] == " _ ":
                 self.board[pos_row][pos_col] = self.player
             else:
                 print("Position already taken")
@@ -44,10 +77,19 @@ class Play(Board):
 
 def game():
     p = Play(3,3)
-    p.board[2][1]= " X "
+    p.board[0][2]= " X "
+    p.board[1][2]= " X "
+    p.board[2][2]= " X "
+
+    
     print(p.board_display())
     print(p.player)
-    print(p.user_input())
+    h_win = p.horizontal_win()
+    win = p.vertical_win()
+    
+    print(f"V Winner {win}")
+    print(f"H Winner {h_win}")
+    #print(p.user_input())
     print(p.board_display())
     
 
