@@ -52,9 +52,34 @@ class Condition(Board):
                 self.winner = self.board[0][i]
                 return self.winner
 
+    def left_diagonal_win(self):
+        for i in range(0, self.rows):
+            if self.board[0][0] == " _ ":
+                continue
 
+            self.win = True
+            if self.board[0][0] != self.board[i][i]: 
+                self.win = False
 
+            if self.win:
+                self.winner = self.board[0][0]
+                return self.winner
 
+            
+    def right_diagonal_win(self):
+        for i in range(0, self.rows):
+            if self.board[0][self.cols-1] == " _ ":
+                continue
+
+            self.win = True
+            if self.board[0][self.cols-1]!=self.board[i][self.cols-1-i] :
+                self.win = False
+            
+
+            if self.win:
+                self.winner =self.board[0][self.cols-1]
+                return self.winner
+            
 class Play(Condition):
     def __init__(self, rows, cols):
         super().__init__(rows, cols)
@@ -78,17 +103,16 @@ class Play(Condition):
 def game():
     p = Play(3,3)
     p.board[0][2]= " X "
-    p.board[1][2]= " X "
-    p.board[2][2]= " X "
+    p.board[1][1]= " X "
+    p.board[2][0]= " X "
 
     
     print(p.board_display())
     print(p.player)
-    h_win = p.horizontal_win()
-    win = p.vertical_win()
-    
-    print(f"V Winner {win}")
-    print(f"H Winner {h_win}")
+    diag = p.right_diagonal_win()
+    print(f"Diag Win {diag}")
+    #print(f"V Winner {win}")
+    #print(f"H Winner {h_win}")
     #print(p.user_input())
     print(p.board_display())
     
