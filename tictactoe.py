@@ -25,60 +25,59 @@ class Condition(Board):
         self.win = False
 
 
-    def vertical_win(self):
+    def horizontal_win(self):
         for i in range (0, self.rows):
             if self.board[i][0] == " _ ":
                 continue
             self.win = True
 
             for j in range (1, self.cols):
-                if self.board[i][0] != self.board[i][j]:
+                if self.board[i][j]!=self.board[i][0]:
                     self.win  = False
 
-            if self.win == True:
+            if self.win:
                 self.winner = self.board[i][0]
                 return self.winner
 
-    def horizontal_win(self):
+    def vertical_win(self):
         for i in range(0, self.cols):
             if self.board[0][i] == " _ ":
                 continue
 
             self.win = True
             for j in range (1,self.rows):
-                if self.board[0][j]!= self.board[i][j]:
+                if self.board[j][i]!=self.board[0][i]:
                     self.win = False
             if self.win:
                 self.winner = self.board[0][i]
                 return self.winner
 
     def left_diagonal_win(self):
-        for i in range(0, self.rows):
-            if self.board[0][0] == " _ ":
-                continue
-
-            self.win = True
-            if self.board[0][0] != self.board[i][i]: 
+        if self.board[0][0] == " _ ":
+            return None
+        self.win = True
+        for i in range(1, self.rows):
+            if self.board[i][i]!=self.board[0][0]: 
                 self.win = False
 
-            if self.win:
-                self.winner = self.board[0][0]
-                return self.winner
+        if self.win:
+            self.winner = self.board[0][0]
+            return self.winner
 
             
     def right_diagonal_win(self):
-        for i in range(0, self.rows):
-            if self.board[0][self.cols-1] == " _ ":
-                continue
-
-            self.win = True
-            if self.board[0][self.cols-1]!=self.board[i][self.cols-1-i] :
+        if self.board[0][self.cols-1] == " _ ":
+                return None
+        self.win = True
+        for i in range(1, self.rows):
+            
+            if self.board[i][self.cols-1-i]!=self.board[0][self.cols-1] :
                 self.win = False
             
 
-            if self.win:
-                self.winner =self.board[0][self.cols-1]
-                return self.winner
+        if self.win:
+            self.winner =self.board[0][self.cols-1]
+            return self.winner
     
     def tie(self): 
         for i in range(0, self.rows):
@@ -87,24 +86,28 @@ class Condition(Board):
                     return False #not tie still remaining
         return True
             
-class Player(Board):
+class Player():
     def __init__(self,name, symbol):
         self.name = name
         self.symbol = symbol
 
-    def user_input(self):
-        position = int(input("Enter your position: "))-1
-        if position ==-1 or position>=self.size:
-            return "Invalid Position"
-        else:
-            pos_row = position//self.rows
-            pos_col = position%self.cols
-            if self.board[pos_row][pos_col] == " _ ":
-                self.board[pos_row][pos_col] = self.symbol
-                return True
-            else:
-                print("Position already taken")
-                return False
+    def user_input(self, game):
+        while True:
+            try:
+                position = int(input("Enter your position: "))-1
+                if position < 0 or position>=game.size:
+                    return False
+                else:
+                    pos_row = position//game.rows
+                    pos_col = position%game.cols
+                    if game.board[pos_row][pos_col] == " _ ":
+                        game.board[pos_row][pos_col] = self.symbol
+                        return True
+                    else:
+                        print("Position already taken\n")
+                        return False
+            except Exception as e:
+                print(f"Error: {e}\n")
 
 class Play(Condition):
     def __init__(self, rows, cols):
@@ -139,18 +142,32 @@ class Play(Condition):
 
     def check_wins(self):
         winner = (self.horizontal_win() or self.vertical_win() or self.left_diagonal_win() or self.right_diagonal_win())
-        if winner: 
-            print(f"Congratulations Winner is {self.current_player.name} Symbol {self.current_player.symbol} \n")
-
+        if winner== self.current_player.symbol: 
+            print(f"\nCongratulations Winner is {self.current_player.name} Symbol {self.current_player.symbol} \n")
+            self.game_running = False
+            
+        
         if self.tie(): 
             print("It's a tie!!!\n")
-
+            self.game_running = False
+            
 
 def game():
-    p = Play(3,3)
-    p.user_play()
-    print(p.p1.symbol)
-    print(p.p2.symbol)
+    play= Play(3,3)
+    play.board_display()
+    play.user_play()
+    while play.game_running:
+        print(f"\n{play.current_player.name} turn, Symbol: {play.current_player.symbol}\n")
+        valid = play.current_player.user_input(play)
+        if valid:
+            play.board_display()
+            play.check_wins()
+            if play.game_running:
+                
+                play.switch_player()
+        else:
+            print("Invalid Move!!!\n")
+        
 game()
 #b.board[2][1] = "X"
 #b.board_display()
